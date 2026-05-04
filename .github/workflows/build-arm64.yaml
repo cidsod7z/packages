@@ -1,20 +1,19 @@
 name: Build ARM64
 concurrency:
-  group: "master-arm64-build"
-
-on:
+  group: master-arm64-build
+'on':
   push:
     branches:
-      - main
+    - main
 jobs:
   build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
       with:
         fetch-depth: 0
     - run: mkdir build
-    - name: Download meta 🔧
+    - name: "Download meta \U0001F527"
       uses: luet-lab/luet-github-action@v0.3.1
       with:
         FINAL_REPO: quay.io/kairos/packages-arm64
@@ -23,9 +22,8 @@ jobs:
         downloadFromList: false
         downloadMeta: true
         luetArch: arm64
-        # renovate: datasource=github-releases depName=mudler/luet
         luetVersion: 0.36.0
-    - name: Build packages 🔧
+    - name: "Build packages \U0001F527"
       uses: luet-lab/luet-github-action@v0.3.1
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       with:
@@ -43,9 +41,8 @@ jobs:
         buildx: true
         platform: linux/arm64
         luetArch: arm64
-        # renovate: datasource=github-releases depName=mudler/luet
         luetVersion: 0.36.0
-    - name: Create repo 🔧
+    - name: "Create repo \U0001F527"
       uses: luet-lab/luet-github-action@v0.3.1
       id: create_repo
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
@@ -59,8 +56,9 @@ jobs:
         pushCache: true
         revisionSHA: true
         luetArch: arm64
-        # renovate: datasource=github-releases depName=mudler/luet
         luetVersion: 0.36.0
     - name: Summary info
-      run: |
-        echo "Repo created at quay.io/kairos/packages-arm64:${{ steps.create_repo.outputs.LUET_PUSHED_REPO }}-repository.yaml" >> $GITHUB_STEP_SUMMARY
+      run: 'echo "Repo created at quay.io/kairos/packages-arm64:${{ steps.create_repo.outputs.LUET_PUSHED_REPO
+        }}-repository.yaml" >> $GITHUB_STEP_SUMMARY
+
+        '
